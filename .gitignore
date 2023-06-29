@@ -5,3 +5,4 @@ log.json
 export*.json
 export*.sql
 export*.md
+logs/

@@ -1,30 +1,37 @@
+'''
+尽可能的抓取全部的犇犇，不回头。
+'''
+
 import json
 import time
 
 import requests
 
-from db import db, models
-from utils import calc_feed_hash
+from db import models
+from scripts.utils import calc_feed_hash
 
-print("[Init] Connecting to Database... ", end="")
+from tools.logger import HandleLog
 
-if not db.is_connection_usable():
-    db.connect()
-
-print("Done.")
+logger = HandleLog()
 
 while True:
     k = 1
     while True:
-        print("page", k)
+        logger.info(f'page {k}')
         k += 1
         is_created = 0
-        r = requests.get(
-            "https://www.luogu.com.cn/api/feed/list?page=" + str(k),
-            headers={
-                "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
-            },
-        ).text
+        try:
+            r = requests.get(
+              "https://www.luogu.com.cn/api/feed/list?page=" + str(k),
+              headers={
+                  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
+                    AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+              },
+              timeout=12
+            ).text
+        except TimeoutError:
+            logger.error('timeout when getting feeds.')
+            continue
         r: list = json.loads(r)["feeds"]["result"]
         if len(r) == 0:
             break

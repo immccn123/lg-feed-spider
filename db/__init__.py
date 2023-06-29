@@ -1,1 +1,5 @@
-from .config import db
+'''
+数据库模型和相关操作。
+'''
+
+from .config import getConnection

@@ -1,13 +1,16 @@
+'''
+从老版本json格式转为数据库格式。
+'''
+
 import json
 import datetime
 
-from utils import calc_feed_hash
-from db import db, models
+from scripts.utils import calc_feed_hash
+from db import getConnection, models
 
-if not db.is_connection_usable():
-    db.connect()
+db = getConnection()
 
-origin_file = json.load(open("log.json", "r", encoding="utf-8"))
+origin_file = json.load(open(input('filename (json format):'), "r", encoding="utf-8"))
 
 cnt = 0
 
