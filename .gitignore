@@ -4,3 +4,4 @@ __pycache__/
 log.json
 export*.json
 export*.sql
+export*.md

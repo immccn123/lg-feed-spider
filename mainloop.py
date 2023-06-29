@@ -18,14 +18,15 @@ while True:
     k = 1
     while True:
         print("page", k)
-        k += 1
         is_created = 0
+        cnt = 0
         r = requests.get(
             "https://www.luogu.com.cn/api/feed/list?page=" + str(k),
             headers={
                 "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
             },
         ).text
+        k += 1
         r: list = json.loads(r)["feeds"]["result"]
         if len(r) == 0:
             break
@@ -44,8 +45,10 @@ while True:
                     "grub_time": datetime.datetime.now(),
                 },
             )
+            print(feed["user"]["name"] + "#" + str(feed["user"]["uid"]))
+            cnt += is_created
         time.sleep(1)
-        if not is_created:
+        if cnt != 20:
             print("Page End")
             break
     time.sleep(5)
