@@ -1,6 +1,6 @@
-'''
-将数据库格式导出为json格式。
-'''
+"""
+将数据库格式导出为 json 格式。
+"""
 
 import datetime
 import json
@@ -24,13 +24,12 @@ for feed in models.Feed.select():
 
 filename = f"export_{int(datetime.datetime.now().timestamp())}.json"
 
-logger.info(f'writing in file {filename}')
-f = open(
-    filename , "w", encoding="utf-8"
-)
+logger.info(f"Writing file {filename}...")
+
+f = open(filename, "w", encoding="utf-8")
 s = json.dumps(feeds)
 
 f.write(s)
 f.close()
 
-logger.info(f'file saved as \'{filename}\'')
+logger.info(f"File saved as '{filename}'")

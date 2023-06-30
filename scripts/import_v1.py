@@ -1,16 +1,16 @@
-'''
+"""
 从老版本json格式转为数据库格式。
-'''
+"""
 
 import json
 import datetime
 
 from scripts.utils import calc_feed_hash
-from db import getConnection, models
+from db import get_connection, models
 
-db = getConnection()
+db = get_connection()
 
-origin_file = json.load(open(input('filename (json format):'), "r", encoding="utf-8"))
+origin_file = json.load(open(input("filename (json format):"), "r", encoding="utf-8"))
 
 cnt = 0
 
@@ -33,12 +33,3 @@ for feed in origin_file:
             "grub_time": datetime.datetime.now(),
         },
     )
-    # models.Feed.create(
-    #     hash=feed_hash,
-    #     user_id=uid,
-    #     user_color="Unknown",
-    #     username=user,
-    #     time=datetime.datetime.fromtimestamp(stime),
-    #     content=content,
-    #     grub_time=datetime.datetime.now(),
-    # )

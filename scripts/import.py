@@ -1,16 +1,18 @@
-'''
+"""
 导入最新版格式的数据。
-'''
+"""
 
 import json
 import datetime
 
 from scripts.utils import calc_feed_hash
-from db import getConnection, models
+from db import get_connection, models
 
-db = getConnection()
+db = get_connection()
 
-origin_file = json.load(open(input('input file name(json format):'), "r", encoding="utf-8"))
+origin_file = json.load(
+    open(input("input file name(json format):"), "r", encoding="utf-8")
+)
 
 cnt = 0
 

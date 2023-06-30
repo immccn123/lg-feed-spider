@@ -1,6 +1,6 @@
-'''
+"""
 尽可能的抓取全部的犇犇，不回头。
-'''
+"""
 
 import json
 import time
@@ -17,20 +17,20 @@ logger = HandleLog()
 while True:
     k = 1
     while True:
-        logger.info(f'page {k}')
+        logger.info(f"[Grab_all] Page {k}")
         k += 1
         is_created = 0
         try:
             r = requests.get(
-              "https://www.luogu.com.cn/api/feed/list?page=" + str(k),
-              headers={
-                  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
+                "https://www.luogu.com.cn/api/feed/list?page=" + str(k),
+                headers={
+                    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
                     AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
-              },
-              timeout=12
+                },
+                timeout=12,
             ).text
         except TimeoutError:
-            logger.error('timeout when getting feeds.')
+            logger.error("[Grab_all] Timed out when getting feeds.")
             continue
         r: list = json.loads(r)["feeds"]["result"]
         if len(r) == 0:
