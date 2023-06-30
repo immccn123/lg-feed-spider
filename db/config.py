@@ -32,7 +32,7 @@ def get_connection():
         # )
         main_database = MySQLDatabase(
             "luogu_feed",
-            host="sh-cynosmain_databasemysql-grp-5hkhuwxc.sql.tencentcmain_database.com",
+            host="sh-cynosdbmysql-grp-5hkhuwxc.sql.tencentcdb.com",
             user="luogu_feed",
             password="Nrnq8fHZx7kWZc",
             charset="utf8mb4",

@@ -19,7 +19,7 @@ def mainloop():
     '''主要逻辑，见上'''
     with open(input("                    filename (json format):"), "r",
                encoding="utf-8") as read_stream:
-        origin_file = json.load(read_stream.read())
+        origin_file = json.load(read_stream)
 
     start_point = input('[leave blank if no]start from x-th message:')
 
