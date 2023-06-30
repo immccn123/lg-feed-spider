@@ -1,7 +1,6 @@
 """
 用于轮询更新犇犇（实时的）。
 """
-
 import datetime
 import json
 import time
@@ -14,17 +13,19 @@ from tools.logger import HandleLog
 
 logger = HandleLog()
 
-db = get_connection()
+main_database = get_connection()
+
 
 def mainloop():
+    """主要逻辑，见上"""
     while True:
         k = 1
         while True:
-            logger.info("Current Page: %d" % (k))
+            logger.info(f"Current Page: {k}")
             is_created = 0
             cnt = 0
             try:
-                r = requests.get(
+                result_get = requests.get(
                     "https://www.luogu.com.cn/api/feed/list?page=" + str(k),
                     headers={
                         "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
@@ -36,10 +37,10 @@ def mainloop():
                 logger.error("Timed out when getting feeds. Retrying.")
                 continue
             k += 1
-            r: list = json.loads(r)["feeds"]["result"]
-            if len(r) == 0:
+            result_get: list = json.loads(result_get)["feeds"]["result"]
+            if len(result_get) == 0:
                 break
-            for feed in r:
+            for feed in result_get:
                 feed_hash = calc_feed_hash(
                     feed["user"]["uid"], feed["time"], feed["content"]
                 )
@@ -61,7 +62,6 @@ def mainloop():
                 break
         time.sleep(5)
 
-try:
+
+if __name__ == "__main__":
     mainloop()
-except KeyboardInterrupt:
-    logger.critical("User aborted.")

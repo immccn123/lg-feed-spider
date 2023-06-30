@@ -15,12 +15,14 @@ from tools.logger import HandleLog
 
 logger = HandleLog()
 
-while True:
-    k = 1
+
+def mainloop():
+    """主要逻辑，见上"""
     while True:
+        k = 1
         logger.info(f"[Grab_all] Page {k}")
         try:
-            r = requests.get(
+            result_get = requests.get(
                 "https://www.luogu.com.cn/api/feed/list?page=" + str(k),
                 headers={
                     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
@@ -32,10 +34,10 @@ while True:
             logger.error("[Grab_all] Timed out when getting feeds.")
             continue
         k += 1
-        r: list = json.loads(r)["feeds"]["result"]
-        if len(r) == 0:
+        result_get: list = json.loads(result_get)["feeds"]["result"]
+        if len(result_get) == 0:
             break
-        for feed in r:
+        for feed in result_get:
             feed_hash = calc_feed_hash(
                 feed["user"]["uid"], feed["time"], feed["content"]
             )
