@@ -7,7 +7,7 @@ from tools.logger import HandleLog
 
 logger = HandleLog()
 
-registered_command = ["export", "fetch", "select", "migrate_v1", "migrate"]
+registered_command = ["export", "fetch", "select", "migrate_v1", "migrate", "grab_all"]
 
 if len(sys.argv) == 1:
     print("No command selected! Try these command below:")
