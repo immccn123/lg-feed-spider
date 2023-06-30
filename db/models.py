@@ -34,6 +34,6 @@ class Feed(Model):
 
 
 if not Feed.table_exists():
-    logger.warning("table 'feed' not found,creating...")
+    logger.warning("Table 'feed' not found, creating...")
     Feed.create_table(False)
-    logger.info("table 'feed' created.")
+    logger.info("Table 'feed' created.")

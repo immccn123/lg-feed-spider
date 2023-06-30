@@ -21,7 +21,7 @@ if sys.argv[1] in registered_command:
         exec(f"import scripts.{sys.argv[1]}")
     except Exception as e:
         logger.critical("An exception occurred:")
-        print(e)
+        logger.error(str(e))
         logger.critical("Aborted.")
         sys.exit(1)
     logger.info(f"Script '{sys.argv[1]}' done.")

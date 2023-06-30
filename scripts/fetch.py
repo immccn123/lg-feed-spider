@@ -54,7 +54,6 @@ def mainloop():
                         "grub_time": datetime.datetime.now(),
                     },
                 )
-                logger.info(f"{feed['user']['name']}#{feed['user']['uid']}")
                 cnt += is_created
             time.sleep(1)
             if cnt != 20:
