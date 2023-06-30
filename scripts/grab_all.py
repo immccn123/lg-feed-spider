@@ -5,6 +5,7 @@
 import json
 import time
 
+import datetime
 import requests
 
 from db import models
@@ -18,8 +19,6 @@ while True:
     k = 1
     while True:
         logger.info(f"[Grab_all] Page {k}")
-        k += 1
-        is_created = 0
         try:
             r = requests.get(
                 "https://www.luogu.com.cn/api/feed/list?page=" + str(k),
@@ -32,6 +31,7 @@ while True:
         except TimeoutError:
             logger.error("[Grab_all] Timed out when getting feeds.")
             continue
+        k += 1
         r: list = json.loads(r)["feeds"]["result"]
         if len(r) == 0:
             break
@@ -45,10 +45,9 @@ while True:
                     "user_id": feed["user"]["uid"],
                     "user_color": feed["user"]["color"],
                     "username": feed["user"]["name"],
-                    "time": feed["time"],
+                    "time": datetime.datetime.fromtimestamp(feed["time"]),
                     "content": feed["content"],
-                    "grub_time": time.time(),
+                    "grub_time": datetime.datetime.now(),
                 },
             )
-        time.sleep(1)
-    time.sleep(5)
+        time.sleep(5)
