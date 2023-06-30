@@ -3,7 +3,7 @@
 """
 
 import sys
-from peewee import SqliteDatabase, OperationalError
+from peewee import MySQLDatabase, OperationalError
 from tools.logger import HandleLog
 
 logger = HandleLog()
@@ -13,8 +13,8 @@ logger.info("connecting database......")
 def get_connection():
     """获取一个数据库连接。"""
     try:
-        db = SqliteDatabase("feed.db")
-        # db = MySQLDatabase(
+        # main_database = SqliteDatabase("feed.main_database")
+        # main_database = MySQLDatabase(
         #     "u933163999_lgfeed",
         #     host="82.180.152.175",
         #     user="u933163999_imken2",
@@ -22,7 +22,7 @@ def get_connection():
         #     charset="utf8mb4",
         #     port=3306,
         # )
-        # db = PostgresqlDatabase(
+        # main_database = PostgresqlDatabase(
         #     'lgfeed',
         #     thread_safe=True,
         #     # thread_safe=False,
@@ -30,20 +30,20 @@ def get_connection():
         #     # user='immccn123',
         #     # host='localhost',
         # )
-        # db = MySQLDatabase(
-        #     "luogu_feed",
-        #     host="sh-cynosdbmysql-grp-5hkhuwxc.sql.tencentcdb.com",
-        #     user="luogu_feed",
-        #     password="Nrnq8fHZx7kWZc",
-        #     charset="utf8mb4",
-        #     port=28315,
-        # )
-        db.connect()
-    except OperationalError as e:
-        db.close()
+        main_database = MySQLDatabase(
+            "luogu_feed",
+            host="sh-cynosmain_databasemysql-grp-5hkhuwxc.sql.tencentcmain_database.com",
+            user="luogu_feed",
+            password="Nrnq8fHZx7kWZc",
+            charset="utf8mb4",
+            port=28315,
+        )
+        main_database.connect()
+    except OperationalError as exception_occurred:
+        main_database.close()
         logger.critical("Cannot connect to database with these exceptions:")
-        print(e)
+        print(exception_occurred)
         logger.critical("Aborted.")
         sys.exit(1)
     logger.info("Connected to database.")
-    return db
+    return main_database

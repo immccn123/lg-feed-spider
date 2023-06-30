@@ -11,25 +11,27 @@ logger = HandleLog()
 
 feeds = []
 
-for feed in models.Feed.select():
-    feeds.append(
-        {
-            "user": str(feed.username) + "#" + str(feed.user_id),
-            "time": feed.time.timestamp(),
-            "color": feed.user_color,
-            "content": feed.content,
-            "grub_time": feed.grub_time.timestamp(),
-        }
-    )
+def mainloop():
+    '''主要逻辑，见上'''
+    for feed in models.Feed.select():
+        feeds.append(
+            {
+                "user": str(feed.username) + "#" + str(feed.user_id),
+                "time": feed.time.timestamp(),
+                "color": feed.user_color,
+                "content": feed.content,
+                "grub_time": feed.grub_time.timestamp(),
+            }
+        )
 
-filename = f"export_{int(datetime.datetime.now().timestamp())}.json"
+    filename = f"export_{int(datetime.datetime.now().timestamp())}.json"
 
-logger.info(f"Writing file {filename}...")
+    logger.info(f"Writing file {filename}...")
 
-f = open(filename, "w", encoding="utf-8")
-s = json.dumps(feeds)
+    write_stream = open(filename, "w", encoding="utf-8")
+    write_content = json.dumps(feeds)
 
-f.write(s)
-f.close()
+    write_stream.write(write_content)
+    write_stream.close()
 
-logger.info(f"File saved as '{filename}'")
+    logger.info(f"File saved as '{filename}'")

@@ -4,32 +4,48 @@
 
 import json
 import datetime
+import sys
 
+from db import  get_connection, models
 from scripts.utils import calc_feed_hash
-from db import get_connection, models
+from tools.logger import HandleLog
+from .utils import print_process
 
-db = get_connection()
+logger = HandleLog()
 
-origin_file = json.load(open(input("filename (json format):"), "r", encoding="utf-8"))
+main_database = get_connection()
 
-cnt = 0
+def mainloop():
+    '''主要逻辑，见上'''
+    origin_file = json.load(open(
+        input("                    filename (json format):"), "r", encoding="utf-8"))
+    start_point = input('[leave blank if no]start from x-th message:')
 
-for feed in origin_file:
-    cnt += 1
-    print(cnt, "/", len(origin_file), end="\r")
-    stime = feed["time"]
-    user = feed["user"].split("#")[0]
-    uid = int(feed["user"].split("#")[1])
-    content = feed["content"]
-    feed_hash = calc_feed_hash(uid, stime, content)
-    _, is_created = models.Feed.get_or_create(
-        hash=feed_hash,
-        defaults={
-            "user_id": uid,
-            "user_color": "Unknown",
-            "username": user,
-            "time": datetime.datetime.fromtimestamp(stime),
-            "content": content,
-            "grub_time": datetime.datetime.now(),
-        },
-    )
+    if start_point != '':
+        try:
+            cnt = int(start_point)-1
+        except TypeError:
+            logger.critical(f'cannot convert \'{start_point}\' into integer.')
+            sys.exit(0)
+    else:
+        cnt = 0
+
+    for feed in origin_file:
+        cnt += 1
+        print_process(cnt,len(origin_file))
+        stime = feed["time"]
+        user = feed["user"].split("#")[0]
+        uid = int(feed["user"].split("#")[1])
+        content = feed["content"]
+        feed_hash = calc_feed_hash(uid, stime, content)
+        models.Feed.get_or_create(
+            hash=feed_hash,
+            defaults={
+                "user_id": uid,
+                "user_color": "Unknown",
+                "username": user,
+                "time": datetime.datetime.fromtimestamp(stime),
+                "content": content,
+                "grub_time": datetime.datetime.now(),
+            },
+        )
