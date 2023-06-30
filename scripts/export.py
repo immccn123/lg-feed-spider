@@ -28,10 +28,8 @@ def mainloop():
 
     logger.info(f"Writing file {filename}...")
 
-    write_stream = open(filename, "w", encoding="utf-8")
-    write_content = json.dumps(feeds)
-
-    write_stream.write(write_content)
-    write_stream.close()
+    with open(filename, "w", encoding="utf-8") as write_stream:
+        write_content = json.dumps(feeds)
+        write_stream.write(write_content)
 
     logger.info(f"File saved as '{filename}'")

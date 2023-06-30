@@ -17,8 +17,10 @@ main_database = get_connection()
 
 def mainloop():
     '''主要逻辑，见上'''
-    origin_file = json.load(open(
-        input("                    filename (json format):"), "r", encoding="utf-8"))
+    with open(input("                    filename (json format):"), "r",
+               encoding="utf-8") as read_stream:
+        origin_file = json.load(read_stream.read())
+
     start_point = input('[leave blank if no]start from x-th message:')
 
     if start_point != '':
