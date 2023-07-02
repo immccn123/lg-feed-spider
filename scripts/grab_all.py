@@ -2,14 +2,11 @@
 尽可能的抓取全部的犇犇，不回头。
 """
 
-import json
 import time
-
 import datetime
-import requests
 
 from db import models
-from scripts.utils import calc_feed_hash
+from scripts.utils import calc_feed_hash,grab
 
 from tools.logger import HandleLog
 
@@ -17,23 +14,11 @@ logger = HandleLog()
 
 def mainloop():
     '''主要逻辑，见上'''
+    k=1
     while True:
-        k=1
         logger.info(f"[Grab_all] Page {k}")
-        try:
-            result_get = requests.get(
-                "https://www.luogu.com.cn/api/feed/list?page=" + str(k),
-                headers={
-                    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
-                    AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
-                },
-                timeout=12,
-            ).text
-        except TimeoutError:
-            logger.error("[Grab_all] Timed out when getting feeds.")
-            continue
+        result_get: list = grab(k)
         k += 1
-        result_get: list = json.loads(result_get)["feeds"]["result"]
         if len(result_get) == 0:
             break
         for feed in result_get:

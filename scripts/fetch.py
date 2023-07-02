@@ -2,41 +2,24 @@
 用于轮询更新犇犇（实时的）。
 """
 import datetime
-import json
 import time
-import requests
 
-from db import  get_connection, models
-from scripts.utils import calc_feed_hash
+from db import models
+from scripts.utils import calc_feed_hash,grab
 
 from tools.logger import HandleLog
 
-logger = HandleLog()
-
-main_database = get_connection()
-
 def mainloop():
     '''主要逻辑，见上'''
+    logger = HandleLog()
     while True:
         k = 1
         while True:
             logger.info(f"Current Page: {k}")
             is_created = 0
             cnt = 0
-            try:
-                result_get = requests.get(
-                    "https://www.luogu.com.cn/api/feed/list?page=" + str(k),
-                    headers={
-                        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
-                        AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
-                    },
-                    timeout=10,
-                ).text
-            except TimeoutError:
-                logger.error("Timed out when getting feeds. Retrying.")
-                continue
+            result_get: list = grab(k)
             k += 1
-            result_get: list = json.loads(result_get)["feeds"]["result"]
             if len(result_get) == 0:
                 break
             for feed in result_get:
@@ -57,7 +40,7 @@ def mainloop():
                 logger.info(f"{feed['user']['name']}#{feed['user']['uid']}")
                 cnt += is_created
             time.sleep(1)
-            if cnt != 20:
+            if cnt == 0:
                 logger.info("Page End")
                 break
         time.sleep(5)

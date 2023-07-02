@@ -5,11 +5,11 @@
 import re
 from db import models
 
-def main_loop():
+def mainloop():
     '''主要逻辑，见上'''
-    query_uid      = input("[Leave blank if no] user uid      = ").strip()
-    query_username = input("[Leave blank if no] user username = ").strip()
-    query_keyword  = input("[Leave blank if no] msg  keyword  = ").strip()
+    query_uid      = input("[Leave blank if no] user uid       = ").strip()
+    query_username = input("[Leave blank if no] user username  = ").strip()
+    query_keyword  = input("[Leave blank if no] msg  keyword   = ").strip()
 
     res = models.Feed.select()
 
