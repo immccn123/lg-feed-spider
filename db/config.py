@@ -3,7 +3,7 @@
 """
 
 import sys
-from peewee import MySQLDatabase, OperationalError
+from peewee import PostgresqlDatabase, OperationalError
 from tools.logger import HandleLog
 
 logger = HandleLog()
@@ -22,22 +22,22 @@ def get_connection():
         #     charset="utf8mb4",
         #     port=3306,
         # )
-        # main_database = PostgresqlDatabase(
-        #     'lgfeed',
-        #     thread_safe=True,
-        #     # thread_safe=False,
-        #     autorollback=False,
-        #     # user='immccn123',
-        #     # host='localhost',
-        # )
-        main_database = MySQLDatabase(
-            "luogu_feed",
-            host="sh-cynosdbmysql-grp-5hkhuwxc.sql.tencentcdb.com",
-            user="luogu_feed",
-            password="Nrnq8fHZx7kWZc",
-            charset="utf8mb4",
-            port=28315,
+        main_database = PostgresqlDatabase(
+            'lgfeed',
+            thread_safe=True,
+            # thread_safe=False,
+            autorollback=False,
+            # user='immccn123',
+            # host='localhost',
         )
+        # main_database = MySQLDatabase(
+        #     "luogu_feed",
+        #     host="sh-cynosdbmysql-grp-5hkhuwxc.sql.tencentcdb.com",
+        #     user="luogu_feed",
+        #     password="Nrnq8fHZx7kWZc",
+        #     charset="utf8mb4",
+        #     port=28315,
+        # )
         main_database.connect()
     except OperationalError as exception_occurred:
         main_database.close()

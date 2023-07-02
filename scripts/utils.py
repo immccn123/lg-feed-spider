@@ -24,14 +24,14 @@ def calc_feed_hash(user_id: int, time: int, content: str):
 
 def print_process(now: int, sumnum: int):
     """输出进度信息"""
-    process_calculated = now*1. / sumnum
-    print(f'{now:7} / {sumnum:7} {process_calculated*100:2.3f} %',end='')
-    zdlen = os.get_terminal_size().columns-30
-    print('[',end='')
-    print('='*int(process_calculated*zdlen),end='')
-    print('>',end='')
-    print(' '*(zdlen-int(process_calculated*zdlen)),end='')
-    print(']',end='\r')
+    process_calculated = now * 1.0 / sumnum
+    print(f"{now:7} / {sumnum:7} {process_calculated*100:2.3f} %", end="")
+    zdlen = os.get_terminal_size().columns - 30
+    print("[", end="")
+    print("=" * int(process_calculated * zdlen), end="")
+    print(">", end="")
+    print(" " * (zdlen - int(process_calculated * zdlen)), end="")
+    print("]", end="\r")
 
 def grab(page:int) -> dict:
     '''爬取第x页犇犇的函数'''

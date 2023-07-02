@@ -5,7 +5,8 @@ import datetime
 import time
 
 from db import models
-from scripts.utils import calc_feed_hash,grab
+
+from .utils import calc_feed_hash,grab
 
 from tools.logger import HandleLog
 
@@ -37,7 +38,6 @@ def mainloop():
                         "grub_time": datetime.datetime.now(),
                     },
                 )
-                logger.info(f"{feed['user']['name']}#{feed['user']['uid']}")
                 cnt += is_created
             time.sleep(1)
             if cnt == 0:
@@ -45,5 +45,6 @@ def mainloop():
                 break
         time.sleep(5)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     mainloop()

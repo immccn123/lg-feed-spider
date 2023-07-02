@@ -16,12 +16,12 @@ from tools.logger import HandleLog
 logger = HandleLog()
 
 registered_command = [
-    ("fetch",fetch),
-    ("export",export),
-    ("grab_all",grab_all),
-    ("migrate_v1",migrate_v1),
-    ("migrate",migrate),
-    ("select",select),
+    ("fetch", fetch),
+    ("export", export),
+    ("grab_all", grab_all),
+    ("migrate_v1", migrate_v1),
+    ("migrate", migrate),
+    ("select", select),
 ]
 
 if len(sys.argv) == 1:
@@ -41,13 +41,13 @@ for cmd in registered_command:
             sys.exit(1)
         except Exception as e:
             logger.critical("An exception occurred:")
-            print(e)
+            logger.error(str(e))
             logger.critical("Aborted.")
             sys.exit(1)
         logger.info(f"Script '{sys.argv[1]}' done.")
         sys.exit(0)
 
-logger.error("unknown command! Try these command below:")
+logger.error("Unknown command! Try these command below:")
 for cmd in registered_command:
     logger.info("\t" + cmd[0])
 sys.exit(1)
