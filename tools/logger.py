@@ -4,29 +4,32 @@
 
 import logging
 import os
-import colorlog
-from logging.handlers import RotatingFileHandler
 from datetime import datetime
+from logging.handlers import RotatingFileHandler
+
+import colorlog
 
 cur_path = os.path.dirname(os.path.realpath(__file__))  # 当前项目路径
-log_path = os.path.join(os.path.dirname(cur_path), 'logs')  # log_path为存放日志的路径
-if not os.path.exists(log_path): os.mkdir(log_path)  # 若不存在logs文件夹，则自动创建
+log_path = os.path.join(os.path.dirname(cur_path), "logs")  # log_path为存放日志的路径
+if not os.path.exists(log_path):
+    os.mkdir(log_path)  # 若不存在logs文件夹，则自动创建
 
 log_colors_config = {
     # 终端输出日志颜色配置
-    'DEBUG': 'white',
-    'INFO': 'cyan',
-    'WARNING': 'yellow',
-    'ERROR': 'red',
-    'CRITICAL': 'bold_red',
+    "DEBUG": "white",
+    "INFO": "cyan",
+    "WARNING": "yellow",
+    "ERROR": "red",
+    "CRITICAL": "bold_red",
 }
 
 default_formats = {
     # 终端输出格式
-    'color_format': '%(log_color)s%(asctime)s-%(name)s [%(levelname)s] : %(message)s',
+    "color_format": "%(log_color)s%(asctime)s-%(name)s [%(levelname)s] : %(message)s",
     # 日志输出格式
-    'log_format': '%(asctime)s-%(name)s [%(levelname)s] : %(message)s'
+    "log_format": "%(asctime)s-%(name)s [%(levelname)s] : %(message)s",
 }
+
 
 class HandleLog:
     """
@@ -36,9 +39,13 @@ class HandleLog:
     """
 
     def __init__(self):
-        self.__now_time = datetime.now().strftime('%Y-%m-%d')  # 当前日期格式化
-        self.__all_log_path = os.path.join(log_path, self.__now_time + "-all" + ".log")  # 收集所有日志信息文件
-        self.__error_log_path = os.path.join(log_path, self.__now_time + "-error" + ".log")  # 收集错误日志信息文件
+        self.__now_time = datetime.now().strftime("%Y-%m-%d")  # 当前日期格式化
+        self.__all_log_path = os.path.join(
+            log_path, self.__now_time + "-all" + ".log"
+        )  # 收集所有日志信息文件
+        self.__error_log_path = os.path.join(
+            log_path, self.__now_time + "-error" + ".log"
+        )  # 收集错误日志信息文件
         self.__logger = logging.getLogger()  # 创建日志记录器
         self.__logger.setLevel(logging.DEBUG)  # 设置默认日志记录器记录级别
 
@@ -50,7 +57,9 @@ class HandleLog:
         :return: 日志记录器
         """
         # 写入文件，如果文件超过1M大小时，切割日志文件，仅保留3个文件
-        logger_handler = RotatingFileHandler(filename=log_path, maxBytes=1 * 1024 * 1024, backupCount=3, encoding='utf-8')
+        logger_handler = RotatingFileHandler(
+            filename=log_path, maxBytes=1 * 1024 * 1024, backupCount=3, encoding="utf-8"
+        )
         return logger_handler
 
     @staticmethod
@@ -85,7 +94,9 @@ class HandleLog:
         :param color_config: 控制台打印颜色配置信息
         :return:
         """
-        formatter = colorlog.ColoredFormatter(default_formats["color_format"], log_colors=color_config)
+        formatter = colorlog.ColoredFormatter(
+            default_formats["color_format"], log_colors=color_config
+        )
         console_handle.setFormatter(formatter)
 
     @staticmethod
@@ -94,7 +105,9 @@ class HandleLog:
         设置日志输出格式-日志文件
         :param file_handler: 日志记录器
         """
-        formatter = logging.Formatter(default_formats["log_format"], datefmt='%a, %d %b %Y %H:%M:%S')
+        formatter = logging.Formatter(
+            default_formats["log_format"], datefmt="%a, %d %b %Y %H:%M:%S"
+        )
         file_handler.setFormatter(formatter)
 
     @staticmethod
@@ -119,17 +132,17 @@ class HandleLog:
         self.__set_log_handler(error_logger_handler, level=logging.ERROR)
         self.__set_color_handle(console_handle)
 
-        if level == 'info':
+        if level == "info":
             self.__logger.info(message)
-        elif level == 'debug':
+        elif level == "debug":
             self.__logger.debug(message)
-        elif level == 'warning':
+        elif level == "warning":
             self.__logger.warning(message)
-        elif level == 'error':
+        elif level == "error":
             self.__logger.error(message)
-        elif level == 'success':
+        elif level == "success":
             self.__logger.success(message)
-        elif level == 'critical':
+        elif level == "critical":
             self.__logger.critical(message)
 
         self.__logger.removeHandler(all_logger_handler)  # 避免日志输出重复问题
@@ -140,24 +153,24 @@ class HandleLog:
         self.__close_handler(error_logger_handler)
 
     def debug(self, message):
-        self.__console('debug', message)
+        self.__console("debug", message)
 
     def info(self, message):
-        self.__console('info', message)
+        self.__console("info", message)
 
     def warning(self, message):
-        self.__console('warning', message)
+        self.__console("warning", message)
 
     def error(self, message):
-        self.__console('error', message)
+        self.__console("error", message)
 
     def critical(self, message):
-        self.__console('critical', message)
+        self.__console("critical", message)
 
 
 log = HandleLog()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     log.info("这是日志信息")
     log.debug("这是debug信息")
     log.warning("这是警告信息")

@@ -4,6 +4,7 @@
 
 import datetime
 import json
+
 from db import models
 from tools.logger import HandleLog
 
@@ -11,8 +12,9 @@ logger = HandleLog()
 
 feeds = []
 
+
 def mainloop():
-    '''主要逻辑，见上'''
+    """主要逻辑，见上"""
     for feed in models.Feed.select():
         feeds.append(
             {

@@ -6,12 +6,13 @@ import time
 
 from db import models
 
-from .utils import calc_feed_hash,grab
+from .utils import calc_feed_hash, grab
 
 from tools.logger import HandleLog
 
+
 def mainloop():
-    '''主要逻辑，见上'''
+    """主要逻辑，见上"""
     logger = HandleLog()
     while True:
         k = 1

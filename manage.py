@@ -4,13 +4,7 @@
 
 import sys
 
-from scripts import fetch
-from scripts import export
-from scripts import grab_all
-from scripts import migrate_v1
-from scripts import migrate
-from scripts import select
-
+from scripts import export, fetch, grab_all, migrate, migrate_v1, select
 from tools.logger import HandleLog
 
 logger = HandleLog()

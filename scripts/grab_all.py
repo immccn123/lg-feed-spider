@@ -2,20 +2,19 @@
 尽可能的抓取全部的犇犇，不回头。
 """
 
-import time
 import datetime
+import time
 
 from db import models
-from scripts.utils import calc_feed_hash,grab
-
+from scripts.utils import calc_feed_hash, grab
 from tools.logger import HandleLog
 
 logger = HandleLog()
 
 
 def mainloop():
-    '''主要逻辑，见上'''
-    k=1
+    """主要逻辑，见上"""
+    k = 1
     while True:
         logger.info(f"[Grab_all] Page {k}")
         result_get: list = grab(k)

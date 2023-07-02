@@ -3,14 +3,16 @@
 utils 的定义是无状态工具函数。
 """
 
-from hashlib import sha224
 import os
 import sys
+from hashlib import sha224
+
 import requests
 
 from tools.logger import HandleLog
 
 logger = HandleLog()
+
 
 def calc_feed_hash(user_id: int, time: int, content: str):
     """根据犇犇信息计算哈希值。"""
@@ -21,6 +23,7 @@ def calc_feed_hash(user_id: int, time: int, content: str):
         + "|"
         + sha224(content.encode("utf-8")).hexdigest()
     )
+
 
 def print_process(now: int, sumnum: int):
     """输出进度信息"""
@@ -33,8 +36,9 @@ def print_process(now: int, sumnum: int):
     print(" " * (zdlen - int(process_calculated * zdlen)), end="")
     print("]", end="\r")
 
-def grab(page:int) -> dict:
-    '''爬取第x页犇犇的函数'''
+
+def grab(page: int) -> dict:
+    """爬取第x页犇犇的函数"""
     assert page >= 1
     for i in range(3):
         try:
