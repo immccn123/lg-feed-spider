@@ -1,0 +1,16 @@
+[Unit]
+Description=Luogu-feed Spider Service
+Wants=network-online.target,postgresql
+After=network.target
+
+[Service]
+Type=simple
+# GuessMainPID=yes
+Restart=always
+RestartSec=5
+User=admin
+WorkingDirectory=/home/admin/lg-feed-spider
+ExecStart=/usr/bin/python3 /home/admin/lg-feed-spider/manage.py fetch
+
+[Install]
+WantedBy=multi-user.target
