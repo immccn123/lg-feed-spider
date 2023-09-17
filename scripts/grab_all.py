@@ -11,10 +11,10 @@ from tools.logger import HandleLog
 
 logger = HandleLog()
 
-progress_file = open("progress", "r", encoding="utf-8")
 
 def mainloop():
     """主要逻辑，见上"""
+    progress_file = open("progress", "r", encoding="utf-8")
     k = int(progress_file.read().strip())
     progress_file.close()
     while True:
