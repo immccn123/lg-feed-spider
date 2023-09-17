@@ -11,16 +11,22 @@ from tools.logger import HandleLog
 
 logger = HandleLog()
 
+progress_file = open("progress", "r", encoding="utf-8")
 
 def mainloop():
     """主要逻辑，见上"""
-    k = 1
+    k = int(progress_file.read().strip())
+    progress_file.close()
     while True:
         logger.info(f"[Grab_all] Page {k}")
         result_get: list = grab(k)
         k += 1
+        progress_file = open("progress", "w", encoding="utf-8")
+        progress_file.write(str(k))
+        progress_file.close()
         if len(result_get) == 0:
-            break
+            k = 1
+            continue
         for feed in result_get:
             feed_hash = calc_feed_hash(
                 feed["user"]["uid"], feed["time"], feed["content"]
