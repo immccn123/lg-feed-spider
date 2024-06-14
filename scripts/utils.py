@@ -61,7 +61,7 @@ def grab(page: int) -> dict:
             assert result_get.status_code == 200
             return json.loads(
                 result_get.content.decode("utf-8", errors="replace").replace("\x00", "\uFFFD")
-            )
+            )["feeds"]["result"]
         except TimeoutError:
             logger.error("Timed out while getting feeds. Retrying...")
         except AssertionError:
