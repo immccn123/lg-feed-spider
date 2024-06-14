@@ -6,8 +6,11 @@ import sys
 
 from scripts import export, fetch, grab_all, migrate, migrate_v1, select
 from tools.logger import HandleLog
+from rich.console import Console
 
 logger = HandleLog()
+
+console = Console()
 
 registered_command = [
     ("fetch", fetch),
@@ -33,10 +36,8 @@ for cmd in registered_command:
             logger.critical("User aborted.")
             logger.critical("Aborted.")
             sys.exit(1)
-        except Exception as e:
-            logger.critical("An exception occurred:")
-            logger.error(str(e))
-            logger.critical("Aborted.")
+        except Exception:
+            console.print_exception(show_locals=True)
             sys.exit(1)
         logger.info(f"Script '{sys.argv[1]}' done.")
         sys.exit(0)
