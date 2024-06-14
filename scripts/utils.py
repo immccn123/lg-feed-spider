@@ -5,6 +5,8 @@ utils 的定义是无状态工具函数。
 
 import os
 import sys
+import json
+import time
 from hashlib import sha224
 
 import requests
@@ -40,21 +42,31 @@ def print_process(now: int, sumnum: int):
 def grab(page: int) -> dict:
     """爬取第x页犇犇的函数"""
     assert page >= 1
-    for i in range(3):
+
+    status_code = None
+
+    for i in range(5):
         try:
             result_get = requests.get(
                 "https://www.luogu.com.cn/api/feed/list?page=" + str(page),
                 headers={
-                    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
-                    AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+                    "user-agent":
+                        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                        "AppleWebKit/537.36 (KHTML, like Gecko) "
+                        "Chrome/125.0.0.0 Safari/537.36"
                 },
                 timeout=10,
             )
+            status_code = result_get.status_code
             assert result_get.status_code == 200
-            return result_get.json()["feeds"]["result"]
+            return json.loads(
+                result_get.content.decode("utf-8", errors="replace").replace("\x00", "\uFFFD")
+            )
         except TimeoutError:
-            logger.error("Timed out when getting feeds. Retrying...")
+            logger.error("Timed out while getting feeds. Retrying...")
         except AssertionError:
-            logger.error("Api endpoint returned a non-200 code,retrying...")
-    logger.critical("Retried 3 times,Aborted.")
+            logger.error(f"Luogu returned a response with code {status_code}, retrying...")
+            time.sleep(i + 1)
+
+    logger.critical("Retried 5 times, aborted.")
     sys.exit(1)
